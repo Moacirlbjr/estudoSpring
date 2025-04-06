@@ -4,6 +4,9 @@ import java.util.Date;
 
 import com.moacirbarbosa.estudo.domain.enuns.EstadoPagamento;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class PagamentoComBoleto extends Pagamento{
 
 	/**

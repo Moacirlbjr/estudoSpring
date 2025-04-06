@@ -1,7 +1,8 @@
 package com.moacirbarbosa.estudo;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import com.moacirbarbosa.estudo.resources.CategoriaResource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,14 +13,22 @@ import com.moacirbarbosa.estudo.domain.Cidade;
 import com.moacirbarbosa.estudo.domain.Cliente;
 import com.moacirbarbosa.estudo.domain.Endereco;
 import com.moacirbarbosa.estudo.domain.Estado;
+import com.moacirbarbosa.estudo.domain.Pagamento;
+import com.moacirbarbosa.estudo.domain.PagamentoComBoleto;
+import com.moacirbarbosa.estudo.domain.PagamentoComCartao;
+import com.moacirbarbosa.estudo.domain.Pedido;
 import com.moacirbarbosa.estudo.domain.Produto;
+import com.moacirbarbosa.estudo.domain.enuns.EstadoPagamento;
 import com.moacirbarbosa.estudo.domain.enuns.TipoCliente;
 import com.moacirbarbosa.estudo.repositories.CategoriaRepository;
 import com.moacirbarbosa.estudo.repositories.CidadeRepository;
 import com.moacirbarbosa.estudo.repositories.ClienteRepository;
 import com.moacirbarbosa.estudo.repositories.EnderecoRepository;
 import com.moacirbarbosa.estudo.repositories.EstadoRepository;
+import com.moacirbarbosa.estudo.repositories.PagamentoRepository;
+import com.moacirbarbosa.estudo.repositories.PedidoRepository;
 import com.moacirbarbosa.estudo.repositories.ProdutoRepository;
+import com.moacirbarbosa.estudo.resources.CategoriaResource;
 
 @SpringBootApplication
 public class EstudoApplication implements CommandLineRunner{
@@ -27,23 +36,22 @@ public class EstudoApplication implements CommandLineRunner{
     private final CategoriaResource categoriaResource;
 
 	@Autowired
-	private CategoriaRepository categoriaRepository;
-	
+	private CategoriaRepository categoriaRepository;	
 	@Autowired
-	private ProdutoRepository produtoRepository;
-	
+	private ProdutoRepository produtoRepository;	
 	@Autowired
-	private CidadeRepository cidadeRepository;
-	
+	private CidadeRepository cidadeRepository;	
 	@Autowired
-	private EstadoRepository estadoRepository;
-	
+	private EstadoRepository estadoRepository;	
 	@Autowired
-	private EnderecoRepository enderecoRepository;
-	
+	private EnderecoRepository enderecoRepository;	
 	@Autowired
-	private ClienteRepository clienteRepository;
-
+	private ClienteRepository clienteRepository;	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
+	
     EstudoApplication(CategoriaResource categoriaResource) {
         this.categoriaResource = categoriaResource;
     }
@@ -97,6 +105,24 @@ public class EstudoApplication implements CommandLineRunner{
 		
 		clienteRepository.saveAll(Arrays.asList(cli1));		
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Pedido ped1 = new Pedido(null,sdf.parse("30/09/2017 10:32"),cli1,e1);
+		Pedido ped2 = new Pedido(null,sdf.parse("10/10/2017 19:35"),cli1,e2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null,EstadoPagamento.QUITADO,ped1,6);
+		ped1.setPagamento(pagto1);
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null,EstadoPagamento.PENDENTE,ped2,sdf.parse("20/10/2017 00:00"),null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
+		
+		
 		
 	}
 

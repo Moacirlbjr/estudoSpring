@@ -2,6 +2,9 @@ package com.moacirbarbosa.estudo.domain;
 
 import com.moacirbarbosa.estudo.domain.enuns.EstadoPagamento;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class PagamentoComCartao extends Pagamento{
 	
 	/**
