@@ -17,7 +17,7 @@ public class ItemPedidoPK implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "produto_id")
 	private Produto produto;
-
+	
 	public Pedido getPedido() {
 		return pedido;
 	}
@@ -26,10 +26,12 @@ public class ItemPedidoPK implements Serializable {
 		this.pedido = pedido;
 	}
 
+	
 	public Produto getProduto() {
 		return produto;
 	}
 
+	
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
