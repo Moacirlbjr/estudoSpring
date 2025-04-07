@@ -1,4 +1,4 @@
-	package com.moacirbarbosa.estudo.domain;
+package com.moacirbarbosa.estudo.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.moacirbarbosa.estudo.domain.enuns.TipoCliente;
 
 import jakarta.persistence.CollectionTable;
@@ -18,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+
 @Entity
 public class Cliente implements Serializable {
 
@@ -29,20 +29,20 @@ public class Cliente implements Serializable {
 	private String email;
 	private String cpfOuCnpj;
 	private Integer tipo;
-	@JsonManagedReference
+
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
-	
+
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefones = new HashSet<>();
-	
-	@JsonBackReference
-	@OneToMany(mappedBy = "cliente")	
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
-	
+
 	public Cliente() {
-		
+
 	}
 
 	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
@@ -166,7 +166,7 @@ public class Cliente implements Serializable {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -184,7 +184,4 @@ public class Cliente implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-
-	
-	
 }

@@ -3,7 +3,7 @@ package com.moacirbarbosa.estudo.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,27 +17,27 @@ public class Endereco implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String logradouro;
 	private String numero;
 	private String complemento;
 	private String bairro;
 	private String cep;
-	
-	@JsonBackReference
+
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
-	
+
 	public Endereco() {
-		
+
 	}
-	
+
 	public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
 			Cliente cliente, Cidade cidade) {
 		super();
@@ -50,8 +50,6 @@ public class Endereco implements Serializable {
 		this.cliente = cliente;
 		this.setCidade(cidade);
 	}
-
-
 
 	/**
 	 * @return the id
@@ -158,14 +156,11 @@ public class Endereco implements Serializable {
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
 	}
-	
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -179,7 +174,4 @@ public class Endereco implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-
-	
-	
 }

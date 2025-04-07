@@ -3,7 +3,7 @@ package com.moacirbarbosa.estudo.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.moacirbarbosa.estudo.domain.enuns.EstadoPagamento;
 
 import jakarta.persistence.Entity;
@@ -17,7 +17,7 @@ import jakarta.persistence.OneToOne;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Pagamento implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -25,15 +25,15 @@ public abstract class Pagamento implements Serializable {
 	@Id
 	private Integer id;
 	private Integer estado;
-	
-	@JsonBackReference
+
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "pedido_id")
-	@MapsId 
+	@MapsId
 	private Pedido pedido;
-	
+
 	public Pagamento() {
-		
+
 	}
 
 	public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
@@ -101,7 +101,5 @@ public abstract class Pagamento implements Serializable {
 		Pagamento other = (Pagamento) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
+
 }
