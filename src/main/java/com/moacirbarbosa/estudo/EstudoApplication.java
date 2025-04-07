@@ -13,6 +13,7 @@ import com.moacirbarbosa.estudo.domain.Cidade;
 import com.moacirbarbosa.estudo.domain.Cliente;
 import com.moacirbarbosa.estudo.domain.Endereco;
 import com.moacirbarbosa.estudo.domain.Estado;
+import com.moacirbarbosa.estudo.domain.ItemPedido;
 import com.moacirbarbosa.estudo.domain.Pagamento;
 import com.moacirbarbosa.estudo.domain.PagamentoComBoleto;
 import com.moacirbarbosa.estudo.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.moacirbarbosa.estudo.repositories.CidadeRepository;
 import com.moacirbarbosa.estudo.repositories.ClienteRepository;
 import com.moacirbarbosa.estudo.repositories.EnderecoRepository;
 import com.moacirbarbosa.estudo.repositories.EstadoRepository;
+import com.moacirbarbosa.estudo.repositories.ItemPedidoRepository;
 import com.moacirbarbosa.estudo.repositories.PagamentoRepository;
 import com.moacirbarbosa.estudo.repositories.PedidoRepository;
 import com.moacirbarbosa.estudo.repositories.ProdutoRepository;
@@ -51,6 +53,8 @@ public class EstudoApplication implements CommandLineRunner{
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
     EstudoApplication(CategoriaResource categoriaResource) {
         this.categoriaResource = categoriaResource;
@@ -122,7 +126,19 @@ public class EstudoApplication implements CommandLineRunner{
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
 		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
 		
 	}
 
