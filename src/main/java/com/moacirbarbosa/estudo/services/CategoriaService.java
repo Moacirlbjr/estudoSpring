@@ -1,5 +1,6 @@
 package com.moacirbarbosa.estudo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -42,5 +43,9 @@ public class CategoriaService {
 		}catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel excluir uma Categoria que possui Produtos");
 		}
+	}
+
+	public List<Categoria> findAll() {		 
+		return repo.findAll();
 	}
 }
