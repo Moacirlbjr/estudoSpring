@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.moacirbarbosa.estudo.domain.Categoria;
 import com.moacirbarbosa.estudo.domain.Cliente;
 import com.moacirbarbosa.estudo.domain.Cliente;
+import com.moacirbarbosa.estudo.dto.CategoriaDTO;
 import com.moacirbarbosa.estudo.dto.ClienteDTO;
 import com.moacirbarbosa.estudo.services.ClienteService;
 
@@ -67,9 +69,9 @@ public class ClienteResource {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> findAll(){
 		List<Cliente> list =service.findAll();
-		List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO()).collect(Collectors.toList());
+		List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
-	}
+	}	
 	
 	@RequestMapping(value = "/page")
 	public ResponseEntity<Page<ClienteDTO>> findPage(

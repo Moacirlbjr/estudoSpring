@@ -2,26 +2,31 @@ package com.moacirbarbosa.estudo.dto;
 
 import java.io.Serializable;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.moacirbarbosa.estudo.domain.Cliente;
-import com.moacirbarbosa.estudo.domain.enuns.TipoCliente;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 
 public class ClienteDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
+	@NotEmpty
+	@Length(min = 5,max = 120, message = "O tamanho deve ser entre 5 a 120 caracteres")
 	private String nome;
+	@NotEmpty
+	@Email(message = "Email inválido")
 	private String email;
-	private String cpfOuCnpj;
-	private Integer tipo;
 
-	public ClienteDTO(Integer id, String nome, String email, String cpfOuCnpj, Integer tipo) {
+	public ClienteDTO(Integer id, String nome, String email) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = tipo;
+	
 	}
 
 	public ClienteDTO() {
@@ -33,8 +38,7 @@ public class ClienteDTO implements Serializable {
 		this.id = obj.getId();
 		this.nome = obj.getNome();
 		this.email = obj.getEmail();
-		this.cpfOuCnpj = obj.getCpfOuCnpj();
-		this.tipo = obj.getTipo().getCod();
+
 	}
 
 	public Integer getId() {
@@ -61,20 +65,6 @@ public class ClienteDTO implements Serializable {
 		this.email = email;
 	}
 
-	public String getCpfOuCnpj() {
-		return cpfOuCnpj;
-	}
-
-	public void setCpfOuCnpj(String cpfOuCnpj) {
-		this.cpfOuCnpj = cpfOuCnpj;
-	}
-
-	public TipoCliente getTipo() {
-		return TipoCliente.toEnum(tipo);
-	}
-
-	public void setTipo(TipoCliente tipo) {
-		this.tipo = tipo.getCod();
-	}
+	
 
 }

@@ -10,11 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import com.moacirbarbosa.estudo.domain.Categoria;
 import com.moacirbarbosa.estudo.domain.Cliente;
-import com.moacirbarbosa.estudo.domain.enuns.TipoCliente;
-import com.moacirbarbosa.estudo.domain.Cliente;
-import com.moacirbarbosa.estudo.dto.CategoriaDTO;
 import com.moacirbarbosa.estudo.dto.ClienteDTO;
 import com.moacirbarbosa.estudo.repositories.ClienteRepository;
 import com.moacirbarbosa.estudo.services.exception.DataIntegrityException;
@@ -39,8 +35,9 @@ public class ClienteService {
 	}
 
 	public Cliente update(Cliente obj) {
-		find(obj.getId());
-		return repo.save(obj);
+		Cliente newObj = find(obj.getId());
+		updateData(newObj,obj);
+		return repo.save(newObj);
 	}
 
 	public void delete(Integer id) {
@@ -62,8 +59,12 @@ public class ClienteService {
 		return repo.findAll(pageRequest);
 	}
 
-	public Cliente fromDTO(ClienteDTO objDto) {
-		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(),
-				TipoCliente.toEnum(objDto.getTipo()));
+	public Cliente fromDTO(ClienteDTO obj) {
+		return new Cliente(obj.getId(),obj.getNome(),obj.getEmail(),null,null);
+	}
+	
+	private void updateData(Cliente newObj, Cliente obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setEmail(obj.getEmail());
 	}
 }
